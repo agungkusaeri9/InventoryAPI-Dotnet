@@ -1,0 +1,17 @@
+# Ignore Visual Studio related files
+.vs/
+*.user
+*.suo
+
+# Ignore build results
+bin/
+obj/
+
+# Ignore dotnet tools
+*.db
+*.DS_Store
+*.log
+*.vsidx
+
+# Optional: ignore environment settings
+.env
