@@ -1,4 +1,9 @@
+using InventoryApi_Dotnet.src.Application.Interfaces.Repositories;
+using InventoryApi_Dotnet.src.Application.Interfaces.Services;
 using InventoryApi_Dotnet.src.Infrastructure.Persistence;
+using InventoryApi_Dotnet.src.Infrastructure.Persistence.Repositories;
+using InventoryApi_Dotnet.src.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +20,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
+
+builder.Services.AddScoped<IPasswordHasher, PasswordHasherService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 
 
 var app = builder.Build();

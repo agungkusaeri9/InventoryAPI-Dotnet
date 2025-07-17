@@ -25,7 +25,6 @@
     <Folder Include="src\Application\UseCases\" />
     <Folder Include="src\Infrastructure\Persistence\Migrations\" />
     <Folder Include="src\Infrastructure\Persistence\Repositories\" />
-    <Folder Include="src\Infrastructure\Services\" />
   </ItemGroup>
 
 </Project>
