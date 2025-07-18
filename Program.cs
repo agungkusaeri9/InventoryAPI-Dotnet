@@ -1,4 +1,5 @@
 using System.Text;
+using InventoryApi_Dotnet.src.API.Middlewares;
 using InventoryApi_Dotnet.src.Application.Interfaces;
 using InventoryApi_Dotnet.src.Application.Interfaces.Repositories;
 using InventoryApi_Dotnet.src.Application.Interfaces.Services;
@@ -7,6 +8,7 @@ using InventoryApi_Dotnet.src.Infrastructure.Persistence.Repositories;
 using InventoryApi_Dotnet.src.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,7 +23,8 @@ builder.Services.AddSwaggerGen();
 
 // application db context
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options => {
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
@@ -47,12 +50,38 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// validation
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(x => x.Value.Errors.Count > 0)
+            .ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+            );
+        var response = new
+        {
+            status = false,
+            message = "Error Validations",
+            errors = errors
+        };
+
+        return new ObjectResult(response) { StatusCode = 422 };
+    };
+});
+
+
 builder.Services.AddScoped<IPasswordHasher, PasswordHasherService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitRepository, UnitRepository>();
+builder.Services.AddScoped<IUnitService, UnitService>();
 
 
 
@@ -67,10 +96,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// app.UseMiddleware<JwtMiddleware>();
+
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

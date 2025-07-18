@@ -4,6 +4,7 @@ using InventoryApi_Dotnet.src.Application.Interfaces.Services;
 using InventoryApi_Dotnet.src.Domain.Entities;
 using InventoryApi_Dotnet.src.Infrastructure.Persistence;
 using InventoryApi_Dotnet.src.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace InventoryApi_Dotnet.src.API.Controllers
             _authService = authService;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO dto)
         {
@@ -37,6 +39,7 @@ namespace InventoryApi_Dotnet.src.API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser()
         {

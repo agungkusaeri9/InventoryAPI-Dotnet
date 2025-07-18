@@ -106,7 +106,7 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<AccessTokenDTO> RefreshAccessTokenAsync(RefreshTokensDTO dto)
+        public async Task<AccessTokenDTO?> RefreshAccessTokenAsync(RefreshTokensDTO dto)
         {
             var existingToken = await _authRepository.GetRefreshTokenAsync(dto.RefreshToken);
             if (existingToken == null)
@@ -119,15 +119,12 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
             if (user == null)
                 throw new Exception("User not found.");
 
-            // Generate new access token
             var accessTokenDto = _jwtService.GenerateToken(user);
 
-            // Optional: generate new refresh token (rotate token)
             var newRefresh = GenerateRefreshToken();
             accessTokenDto.RefreshToken = newRefresh.Token;
             accessTokenDto.ExpiredAt = newRefresh.ExpiresAt;
 
-            // Hapus token lama & simpan token baru (rotate strategy)
             _authRepository.RemoveRefreshToken(existingToken);
 
             var refreshEntity = new RefreshToken
