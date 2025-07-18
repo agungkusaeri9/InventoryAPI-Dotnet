@@ -8,7 +8,7 @@
 
         public ApiResponse(bool status, string message, T? data = default)
         {
-            Status = Status;
+            Status = status;
             Message = message;
             Data = data;
         }

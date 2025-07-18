@@ -1,5 +1,6 @@
 ﻿using InventoryApi_Dotnet.src.Application.DTOs.Auth;
 using InventoryApi_Dotnet.src.Application.Interfaces.Repositories;
+using InventoryApi_Dotnet.src.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryApi_Dotnet.src.Infrastructure.Persistence.Repositories
@@ -13,11 +14,31 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<bool> LoginAsync(string username, string password)
+
+        public async Task<User?> GetByUsernameAsync(string username)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(user => user.Username == username && user.Password == password);
-            return user != null;
+            return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
-         
+
+        public async Task AddRefreshTokenAsync(RefreshToken token)
+        {
+            await _context.RefreshTokens.AddAsync(token);
+        }
+
+        public async Task<RefreshToken?> GetRefreshTokenAsync(string token)
+        {
+            return await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == token);
+        }
+
+        public void RemoveRefreshToken(RefreshToken token)
+        {
+            _context.RefreshTokens.Remove(token);
+        }
+
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
     }
 }
