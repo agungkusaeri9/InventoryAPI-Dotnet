@@ -1,4 +1,5 @@
 ﻿using InventoryApi_Dotnet.src.Domain.Entities;
+using InventoryAPI_Dotnet.src.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryApi_Dotnet.src.Infrastructure.Persistence
@@ -13,6 +14,7 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Persistence
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Unit> Units { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 
 }

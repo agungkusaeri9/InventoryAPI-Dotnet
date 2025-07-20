@@ -5,9 +5,9 @@ namespace InventoryApi_Dotnet.src.API.Helpers
 {
     public class ResponseFormatter
     {
-        public static ObjectResult Success<T>(T? data, string message = "Success", int code = 200)
+        public static ObjectResult Success(object? data, string message = "Success", int code = 200)
         {
-            var result = new ApiResponse<T>(true, message, data);
+            var result = new ApiResponse<object>(true, message, data);
             return new ObjectResult(result) { StatusCode = code };
         }
 

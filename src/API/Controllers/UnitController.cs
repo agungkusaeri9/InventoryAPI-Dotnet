@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InventoryApi_Dotnet.src.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class UnitController : ControllerBase
     {

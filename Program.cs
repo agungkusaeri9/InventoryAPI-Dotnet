@@ -6,6 +6,8 @@ using InventoryApi_Dotnet.src.Application.Interfaces.Services;
 using InventoryApi_Dotnet.src.Infrastructure.Persistence;
 using InventoryApi_Dotnet.src.Infrastructure.Persistence.Repositories;
 using InventoryApi_Dotnet.src.Infrastructure.Services;
+using InventoryAPI_Dotnet.src.Application.Interfaces.Services;
+using InventoryAPI_Dotnet.src.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +52,18 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials(); 
+        });
+});
+
 // validation
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -82,6 +96,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUnitRepository, UnitRepository>();
 builder.Services.AddScoped<IUnitService, UnitService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
 
@@ -96,7 +112,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseMiddleware<JwtMiddleware>();
+app.UseCors("AllowFrontend");
+
+app.UseMiddleware<JwtMiddleware>();
 
 app.UseHttpsRedirection();
 

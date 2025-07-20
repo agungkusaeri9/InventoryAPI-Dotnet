@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryApi_Dotnet.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250718075157_createUnit")]
-    partial class createUnit
+    [Migration("20250718132905_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
