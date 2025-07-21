@@ -15,6 +15,7 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Persistence
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 
 }

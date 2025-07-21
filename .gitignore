@@ -15,3 +15,5 @@ obj/
 
 # Optional: ignore environment settings
 .env
+
+wwwroot
