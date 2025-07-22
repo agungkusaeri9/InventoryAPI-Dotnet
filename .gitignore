@@ -16,7 +16,7 @@ obj/
 # Optional: ignore environment settings
 .env
 
-wwwroot
+wwwroot/
 
 appsettings.json
 appsettings.Development.json
