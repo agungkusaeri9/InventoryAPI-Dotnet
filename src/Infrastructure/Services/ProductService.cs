@@ -87,5 +87,104 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
                 Price = created.Price
             };
         }
+
+        public async Task<ProductDTO?> GetByIdAsync(int id)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {id} not found.");
+            }
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Code = product.Code,
+                Name = product.Name,
+                Description = product.Description,
+                Category = new CategoryDTO
+                {
+                    Id = product.Category.Id,
+                    Code = product.Category.Code,
+                    Name = product.Category.Name
+                },
+                Unit = new UnitDTO
+                {
+                    Id = product.Unit.Id,
+                    Code = product.Unit.Code,
+                    Name = product.Unit.Name
+                },
+                Stock = product.Stock,
+                Price = product.Price,
+                Image = _imageService.GetImageUrl(product.Image)
+            };
+        }
+
+        public async Task<ProductDTO> UpdateAsync(int id, UpdateProductDTO dto, IFormFile? imageFile)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {id} not found.");
+            }
+
+            product.Name = dto.Name;
+            product.Description = dto.Description;
+            product.Price = dto.Price;
+            product.CategoryId = dto.CategoryId;
+            product.UnitId = dto.UnitId;
+            product.Stock = dto.Stock;
+
+            if (imageFile != null)
+            {
+                if (!string.IsNullOrEmpty(product.Image))
+                {
+                    // delete the old image if it exists
+                    await _imageService.DeleteImageAsync(product.Image);
+                }
+                product.Image = await _imageService.UploadImageAsync(imageFile, "images/products");
+            }
+
+            await _productRepository.UpdateAsync(product);
+
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Code = product.Code,
+                Name = product.Name,
+                Description = product.Description,
+                Category = new CategoryDTO
+                {
+                    Id = product.Category.Id,
+                    Code = product.Category.Code,
+                    Name = product.Category.Name
+                },
+                Unit = new UnitDTO
+                {
+                    Id = product.Unit.Id,
+                    Code = product.Unit.Code,
+                    Name = product.Unit.Name
+                },
+                Stock = product.Stock,
+                Price = product.Price,
+                Image = _imageService.GetImageUrl(product.Image)
+            };
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {id} not found.");
+            }
+
+            if (!string.IsNullOrEmpty(product.Image))
+            {
+                // delete the image if it exists
+                await _imageService.DeleteImageAsync(product.Image);
+            }
+
+            return await _productRepository.DeleteAsync(product);
+        }
     }
 }

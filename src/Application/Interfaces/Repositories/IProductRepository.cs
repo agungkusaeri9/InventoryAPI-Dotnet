@@ -11,6 +11,9 @@ namespace InventoryApi_Dotnet.src.Application.Interfaces.Repositories
     public interface IProductRepository
     {
         Task<PaginatedList<Product>> GetAllAsync(int pageIndex = 1, int pageSize = 10, string? keyword = null);
-        Task<Product?> CreateAsync(Product product); 
+        Task<Product?> CreateAsync(Product product);
+        Task<Product?> GetByIdAsync(int id);
+        Task<Product> UpdateAsync(Product product);
+        Task<bool> DeleteAsync(Product product);
     }
 }

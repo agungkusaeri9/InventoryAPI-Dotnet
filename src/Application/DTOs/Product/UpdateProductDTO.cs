@@ -20,6 +20,6 @@ namespace InventoryApi_Dotnet.src.Application.DTOs.Product
         public int UnitId { get; set; }
         [Required(ErrorMessage = "Stock is required")]
         public int Stock { get; set; }
-        public string? Image { get; set; } = string.Empty;
+        public IFormFile? Image { get; set; }
     }
 }

@@ -9,5 +9,6 @@ namespace InventoryApi_Dotnet.src.Application.Interfaces.Services
     {
         Task<string> UploadImageAsync(IFormFile file, string folderName);
         string GetImageUrl(string image);
+        Task<bool> DeleteImageAsync(string imagePath);
     }
 }

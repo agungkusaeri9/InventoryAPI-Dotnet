@@ -48,5 +48,59 @@ namespace InventoryApi_Dotnet.src.API.Controllers
                 return ResponseFormatter.Error(ex.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsyn(int id)
+        {
+            try
+            {
+                var result = await _productService.GetByIdAsync(id);
+                return ResponseFormatter.Success(result, "Product retrieved successfully");
+            }
+            catch (KeyNotFoundException knfEx)
+            {
+                return ResponseFormatter.Error(knfEx.Message, 403);
+            }
+            catch (System.Exception ex)
+            {
+                return ResponseFormatter.Error(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromForm] UpdateProductDTO dto, IFormFile? image)
+        {
+            try
+            {
+                var result = await _productService.UpdateAsync(id, dto, image);
+                return ResponseFormatter.Success(result, "Product updated successfully");
+            }
+            catch (KeyNotFoundException knfEx)
+            {
+                return ResponseFormatter.Error(knfEx.Message, 403);
+            }
+            catch (System.Exception ex)
+            {
+                return ResponseFormatter.Error(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                await _productService.DeleteAsync(id);
+                return ResponseFormatter.Success(null, "Product deleted successfully");
+            }
+            catch (KeyNotFoundException knfEx)
+            {
+                return ResponseFormatter.Error(knfEx.Message, 403);
+            }
+            catch (System.Exception ex)
+            {
+                return ResponseFormatter.Error(ex.Message);
+            }
+        }
     }
 }

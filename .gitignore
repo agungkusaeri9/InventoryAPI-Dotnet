@@ -17,3 +17,6 @@ obj/
 .env
 
 wwwroot
+
+appsettings.json
+appsettings.Development.json

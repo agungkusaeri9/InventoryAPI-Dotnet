@@ -2,12 +2,12 @@
 
 namespace InventoryApi_Dotnet.src.Domain.Entities
 {
+    public enum UserRole
+    {
+        Admin, Staff
+    };
     public class User : BaseEntity
     {
-        public enum UserRole
-        {
-            Admin, Staff
-        };
 
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;

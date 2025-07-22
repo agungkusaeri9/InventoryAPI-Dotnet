@@ -12,14 +12,14 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Persistence
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var passwordHasher = new PasswordHasher<User>();
 
-            if(!context.Users.Any())
+            if (!context.Users.Any())
             {
                 var user = new User
                 {
                     Username = "admin",
                     Name = "Admin",
                     Email = "admin@gmail.com",
-                    Role = User.UserRole.Admin,
+                    Role = UserRole.Admin,
                     IsActive = true
                 };
 

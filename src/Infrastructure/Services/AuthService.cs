@@ -49,7 +49,7 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
             var ip = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString();
             var userAgent = _httpContextAccessor.HttpContext?.Request?.Headers["User-Agent"].ToString();
 
-            var accessTokenDto = _jwtService.GenerateToken(user); 
+            var accessTokenDto = _jwtService.GenerateToken(user);
 
             accessTokenDto.RefreshToken = refreshToken.Token;
             accessTokenDto.ExpiredAt = refreshToken.ExpiresAt;
@@ -78,7 +78,7 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
                     Name = user.Name,
                     Email = user.Email,
                     Username = user.Username,
-                    Role = user.Role.ToString()
+                    Role = user.Role
                 },
                 AccessToken = accessTokenDto
             };

@@ -42,7 +42,7 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
             return Path.Combine(folderName, uniqueFileName).Replace("\\", "/");
         }
 
-       public string GetImageUrl(string? fileName)
+        public string GetImageUrl(string? fileName)
         {
             if (string.IsNullOrEmpty(fileName))
                 return string.Empty;
@@ -52,5 +52,23 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
             var baseUrl = $"{request.Scheme}://{request.Host}";
             return $"{baseUrl}/{fileName}";
         }
+
+        public Task<bool> DeleteImageAsync(string imagePath)
+        {
+            if (string.IsNullOrEmpty(imagePath))
+                return Task.FromResult(false);
+
+            var rootPath = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var filePath = Path.Combine(rootPath, imagePath);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+                return Task.FromResult(true);
+            }
+
+            return Task.FromResult(false);
+        }
+
     }
 }
