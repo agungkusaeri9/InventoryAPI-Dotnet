@@ -115,11 +115,11 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
                 },
                 Stock = product.Stock,
                 Price = product.Price,
-                Image = _imageService.GetImageUrl(product.Image)
+                Image = _imageService.GetImageUrl(product!.Image)
             };
         }
 
-        public async Task<ProductDTO> UpdateAsync(int id, UpdateProductDTO dto, IFormFile? imageFile)
+        public async Task<ProductDTO?> UpdateAsync(int id, UpdateProductDTO dto, IFormFile? imageFile)
         {
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null)

@@ -75,7 +75,7 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Persistence.Repositories
         public async Task DeleteAsync(int id)
         {
             var supplier = await GetByIdAsync(id);
-            _context.Suppliers.Remove(supplier);
+            _context.Suppliers.Remove(supplier!);
             await _context.SaveChangesAsync();
         }
     }

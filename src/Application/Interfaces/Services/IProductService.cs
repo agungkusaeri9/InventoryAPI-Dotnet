@@ -10,7 +10,6 @@ namespace InventoryApi_Dotnet.src.Application.Interfaces.Services
     public interface IProductService
     {
         Task<PaginatedList<ProductDTO>> GetAllAsync(int pageIndex = 1, int pageSize = 10, string? keyword = null);
-        // Task<ProductDTO> GetByIdAsync(int id);
         Task<ProductDTO?> CreateAsync(CreateProductDTO createProductDTO, IFormFile imageFile);
         Task<ProductDTO?> GetByIdAsync(int id);
         Task<ProductDTO?> UpdateAsync(int id, UpdateProductDTO updateProductDTO, IFormFile? imageFile);

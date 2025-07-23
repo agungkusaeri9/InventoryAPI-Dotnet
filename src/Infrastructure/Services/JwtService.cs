@@ -24,10 +24,10 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expireMinutes = double.Parse(configuration["Jwt:ExpireMinutes"]);
+            var expireMinutes = double.Parse(configuration["Jwt:ExpireMinutes"]!);
             var expireAt = DateTime.UtcNow.AddMinutes(expireMinutes);
 
             var token = new JwtSecurityToken(

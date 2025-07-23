@@ -28,7 +28,7 @@ namespace InventoryApi_Dotnet.src.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<LoginResponseDTO> LoginAsync(string username, string password)
+        public async Task<LoginResponseDTO?> LoginAsync(string username, string password)
         {
             var hasher = new PasswordHasherService();
             var user = await _authRepository.GetByUsernameAsync(username);
